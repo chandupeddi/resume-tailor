@@ -1,0 +1,63 @@
+{
+  "name": "resume-tailor",
+  "version": "0.1.0",
+  "description": "CLI tool to tailor your resume to any job description. Supports local AI (Ollama), cloud AI (OpenAI), PDF/DOCX input, cover letters, and multiple templates.",
+  "main": "src/index.js",
+  "bin": {
+    "resume-tailor": "./bin/resume-tailor.js"
+  },
+  "scripts": {
+    "test": "node test/run.js",
+    "start": "node bin/resume-tailor.js",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "resume",
+    "cv",
+    "job",
+    "tailor",
+    "career",
+    "ats",
+    "ollama",
+    "ai",
+    "docx",
+    "cli",
+    "cover-letter",
+    "job-search",
+    "openai",
+    "pdf"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "docx": "^9.7.1",
+    "mammoth": "^1.8.0",
+    "node-html-parser": "^6.1.13",
+    "ora": "^8.0.1",
+    "pdf-parse": "^1.1.1"
+  },
+  "type": "module",
+  "files": [
+    "bin/",
+    "src/",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/resume-tailor#readme",
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/resume-tailor/issues"
+  }
+}

@@ -1,0 +1,26 @@
+Data Engineer
+Google
+
+About the Role
+
+We're looking for a Data Engineer to join our Cloud Data team. You'll build and maintain scalable data pipelines that power analytics and machine learning across Google Cloud products.
+
+Responsibilities
+- Design, build, and maintain scalable ETL/ELT data pipelines using Apache Beam and Dataflow
+- Develop and optimize data models in BigQuery for analytics and reporting
+- Collaborate with data scientists and analysts to build feature engineering pipelines
+- Monitor data quality and implement automated testing for data pipelines
+- Participate in on-call rotation for production data systems
+
+Requirements
+- 3+ years of experience in data engineering or related field
+- Strong proficiency in Python and SQL
+- Experience with cloud data platforms (GCP preferred, AWS acceptable)
+- Experience with data pipeline orchestration tools (Airflow, dbt, or similar)
+- Familiarity with data warehousing concepts and dimensional modeling
+
+Nice to Have
+- Experience with Apache Spark or Apache Beam
+- Knowledge of machine learning pipelines and MLOps
+- Experience with Kubernetes and containerized deployments
+- Familiarity with Terraform for infrastructure as code

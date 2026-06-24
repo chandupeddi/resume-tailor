@@ -1,0 +1,69 @@
+{
+  "name": "Jane Smith",
+  "contact": {
+    "email": "jane.smith@email.com",
+    "phone": "555-012-3456",
+    "linkedin": "linkedin.com/in/janesmith",
+    "location": "San Francisco, CA"
+  },
+  "summary": "Data analyst with 3 years of experience in business intelligence, statistical analysis, and data visualization. Skilled in transforming complex datasets into actionable insights for cross-functional teams.",
+  "experience": [
+    {
+      "title": "Data Analyst",
+      "company": "TechCorp Inc.",
+      "location": "San Francisco, CA",
+      "startDate": "Jun 2022",
+      "endDate": "Present",
+      "bullets": [
+        "Developed automated reporting dashboards using Tableau and SQL, reducing manual reporting time by 60%",
+        "Analyzed customer churn patterns across 500K+ user base, identifying 3 key risk factors that informed retention strategy",
+        "Built ETL pipelines using Python and Airflow to consolidate data from 5 source systems into a unified data warehouse",
+        "Collaborated with product team to design A/B testing framework, improving conversion rates by 15%",
+        "Created weekly KPI reports for executive leadership, tracking revenue, engagement, and growth metrics"
+      ]
+    },
+    {
+      "title": "Junior Analyst",
+      "company": "DataStart LLC",
+      "location": "Austin, TX",
+      "startDate": "Jan 2021",
+      "endDate": "May 2022",
+      "bullets": [
+        "Performed ad-hoc analysis on marketing campaign performance using SQL and Excel",
+        "Maintained and updated existing Tableau dashboards for sales and marketing teams",
+        "Assisted in migration from legacy reporting system to modern BI stack"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Customer Segmentation Engine",
+      "tech": "Python, Scikit-learn, Pandas",
+      "description": "Built a K-means clustering model to segment 200K customers into 5 behavioral groups, enabling targeted marketing campaigns that increased email open rates by 25%."
+    },
+    {
+      "title": "Real-time Sales Dashboard",
+      "tech": "Tableau, SQL, Snowflake",
+      "description": "Designed and deployed an interactive sales performance dashboard tracking 15 KPIs across 3 regions, adopted by 40+ sales representatives."
+    }
+  ],
+  "skills": [
+    { "category": "Languages", "items": ["Python", "SQL", "R", "JavaScript"] },
+    { "category": "Data Tools", "items": ["Tableau", "Power BI", "Excel", "Jupyter"] },
+    { "category": "Databases", "items": ["PostgreSQL", "Snowflake", "MySQL", "MongoDB"] },
+    { "category": "Frameworks", "items": ["Pandas", "NumPy", "Scikit-learn", "Airflow", "dbt"] },
+    { "category": "Cloud", "items": ["AWS (S3, Redshift, Lambda)", "GCP (BigQuery)"] }
+  ],
+  "education": [
+    {
+      "degree": "B.S. Statistics",
+      "school": "University of California, Berkeley",
+      "gpa": "3.7",
+      "endDate": "2020"
+    }
+  ],
+  "certifications": [
+    "Google Data Analytics Professional Certificate",
+    "AWS Cloud Practitioner"
+  ]
+}

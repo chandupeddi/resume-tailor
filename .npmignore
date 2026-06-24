@@ -1,0 +1,10 @@
+test/
+test-output/
+.github/
+CONTRIBUTING.md
+.gitignore
+.eslintrc*
+coverage/
+*.log
+.DS_Store
+.env
