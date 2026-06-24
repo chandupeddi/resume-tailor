@@ -4,43 +4,158 @@ A CLI tool that tailors your resume to any job description. Reorders skills, rew
 
 Supports **free local AI** via [Ollama](https://ollama.com), cloud AI via OpenAI, PDF/DOCX/JSON input, cover letters, and multiple templates.
 
-## Install
+---
 
+## Installation
+
+### 1. Install Node.js (if you don't have it)
+
+Check if you have it:
 ```bash
-npm install -g resume-tailor
+node --version
 ```
 
-Or clone and link locally:
+If not installed, download from [nodejs.org](https://nodejs.org/) (v18 or higher).
+
+### 2. Clone the repo
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/resume-tailor.git
 cd resume-tailor
-npm install
-npm link
 ```
 
-**Requirements:** Node.js >= 18. Ollama (optional, for free local AI).
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Link it globally
+
+```bash
+sudo npm link
+```
+
+> **Why `sudo`?** On macOS, npm needs permission to write to `/usr/local/lib/node_modules`. You'll be prompted for your Mac password.
+
+> **If you don't want to use `sudo`**, skip `npm link` and run the tool directly:
+> ```bash
+> node ~/path/to/resume-tailor/bin/resume-tailor.js -r resume.docx -j jd.txt
+> ```
+> Or create an alias:
+> ```bash
+> echo 'alias resume-tailor="node ~/path/to/resume-tailor/bin/resume-tailor.js"' >> ~/.zshrc
+> source ~/.zshrc
+> ```
+
+### 5. Verify it works
+
+```bash
+resume-tailor --help
+```
+
+You should see the list of available options.
+
+---
 
 ## Quick Start
 
+### Step 1: Prepare your files
+
+You need two things:
+
+1. **Your resume** — a `.docx`, `.pdf`, or `.json` file
+2. **A job description** — save it as a `.txt` file
+
+**How to create a JD text file:**
+1. Copy the job description from the posting
+2. Open Terminal and run:
+   ```bash
+   pbpaste > ~/Downloads/jd.txt
+   ```
+   This saves your clipboard as `jd.txt` in Downloads.
+
+### Step 2: Run it
+
 ```bash
-# Basic — keyword matching only (no AI, instant)
-resume-tailor -r my-resume.docx -j job-description.txt
+# Basic (no AI — instant keyword matching)
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt
 
-# With free local AI (requires Ollama)
-resume-tailor -r my-resume.docx -j job-description.txt --ai ollama
+# With cover letter
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt --cover-letter
 
-# From a job posting URL
-resume-tailor -r my-resume.pdf --jd-url "https://careers.google.com/jobs/view/123"
+# With a different template
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt --template classic
 
-# With cover letter + classic template
-resume-tailor -r my-resume.docx -j jd.txt --cover-letter --template classic
+# With free local AI (see Ollama setup below)
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt --ai ollama --cover-letter
 
-# With OpenAI
-resume-tailor -r my-resume.docx -j jd.txt --ai openai --api-key sk-...
+# From a job posting URL (instead of a .txt file)
+resume-tailor -r ~/Downloads/my-resume.docx --jd-url "https://linkedin.com/jobs/view/12345"
 ```
 
-Output: `./output/CompanyName_Role/Resume_CompanyName_Role.docx`
+> **Important:** Replace `~/Downloads/my-resume.docx` and `~/Downloads/jd.txt` with the actual paths to YOUR files. These are just examples.
+
+### Step 3: Find your output
+
+Output goes to `./output/CompanyName_Role/` in your current directory:
+```
+output/
+└── Google_Data_Engineer/
+    ├── Resume_Google_Data_Engineer.docx
+    └── Cover_Letter_Google_Data_Engineer.docx    # if --cover-letter was used
+```
+
+Open the `.docx` files in Word, Google Docs, or Preview.
+
+---
+
+## Setting Up Ollama (Free Local AI)
+
+Ollama runs an AI model on your laptop for free. No API keys, no cost, fully private.
+
+### 1. Install Ollama
+
+**macOS (Homebrew):**
+```bash
+brew install ollama
+```
+
+Or download from [ollama.com/download](https://ollama.com/download).
+
+### 2. Start the Ollama server
+
+Open a terminal and run:
+```bash
+ollama serve
+```
+
+> **This command keeps running** — it's a background server. Leave this terminal tab open.
+
+### 3. Pull the AI model (one-time, ~4GB download)
+
+Open a **new terminal tab** (`Cmd + T` on macOS) and run:
+```bash
+ollama pull mistral
+```
+
+> **You need two terminal tabs:** one running `ollama serve`, another for pulling models and running commands. The `ollama pull` command will fail if `ollama serve` isn't running in another tab.
+
+### 4. Run with AI
+
+```bash
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt --ai ollama
+```
+
+On first run, AI enhancement takes 30-60 seconds depending on your machine. Subsequent runs are faster.
+
+**Use a different model:**
+```bash
+ollama pull llama3.1
+resume-tailor -r resume.docx -j jd.txt --ai ollama --model llama3.1
+```
+
+---
 
 ## How It Works
 
@@ -78,6 +193,8 @@ Everything above, plus:
 - Rewrites project descriptions to highlight relevant aspects
 - **Never invents experience or metrics** — only rephrases what you already have
 
+---
+
 ## Supported Formats
 
 | Input | Formats |
@@ -86,21 +203,15 @@ Everything above, plus:
 | Job Description | `.txt` file, or `--jd-url` for URLs |
 | Output | `.docx` (3 templates) |
 
-## Templates
+### Resume format notes
 
-| Template | Style |
-|----------|-------|
-| `modern` (default) | Clean blue accents, Arial, centered header |
-| `classic` | Traditional black & white, Georgia serif, left-aligned |
-| `minimal` | Ultra-clean, subtle grays, Helvetica |
+- **`.docx`** — Works with most resume formats, including resumes with spaced-out headings (e.g., "P R O F E S S I O N A L  S U M M A R Y")
+- **`.pdf`** — Best effort parsing. Complex layouts with columns or tables may not parse perfectly. If results are off, try saving your resume as `.docx` instead.
+- **`.json`** — Most reliable. See the JSON format below.
 
-```bash
-resume-tailor -r resume.docx -j jd.txt --template classic
-```
+### JSON Resume Format
 
-## JSON Resume Format
-
-You can provide your resume as structured JSON:
+For the most accurate parsing, provide your resume as structured JSON:
 
 ```json
 {
@@ -116,6 +227,7 @@ You can provide your resume as structured JSON:
     {
       "title": "Senior Data Engineer",
       "company": "Acme Corp",
+      "location": "San Francisco, CA",
       "startDate": "Jan 2022",
       "endDate": "Present",
       "bullets": [
@@ -136,19 +248,31 @@ You can provide your resume as structured JSON:
     }
   ],
   "education": [
-    { "degree": "M.S. Computer Science", "school": "Stanford University", "gpa": "3.9" }
+    {
+      "degree": "M.S. Computer Science",
+      "school": "Stanford University",
+      "gpa": "3.9"
+    }
   ],
   "certifications": ["AWS Solutions Architect"]
 }
 ```
 
-## Setting Up Ollama (Free Local AI)
+---
 
-1. Install: https://ollama.com/download
-2. Start: `ollama serve`
-3. First run auto-pulls Mistral 7B (~4GB one-time download)
+## Templates
 
-Use a different model: `--ai ollama --model llama3.1`
+| Template | Style |
+|----------|-------|
+| `modern` (default) | Clean blue accents, Arial, centered header |
+| `classic` | Traditional black & white, Georgia serif, left-aligned |
+| `minimal` | Ultra-clean, subtle grays, Helvetica |
+
+```bash
+resume-tailor -r resume.docx -j jd.txt --template classic
+```
+
+---
 
 ## CLI Reference
 
@@ -163,12 +287,70 @@ Options:
   -o, --output <path>    Output directory (default: ./output)
   --ai <provider>        AI provider: ollama, openai, or none (default: none)
   --model <model>        AI model (default: mistral / gpt-4o-mini)
-  --api-key <key>        API key for cloud AI (or set OPENAI_API_KEY)
+  --api-key <key>        API key for cloud AI (or set OPENAI_API_KEY env var)
   --template <name>      Resume template: modern, classic, minimal (default: modern)
   --cover-letter         Also generate a cover letter
   --verbose              Show detailed output
   -h, --help             Display help
 ```
+
+---
+
+## Troubleshooting
+
+### `npm link` gives "EACCES: permission denied"
+
+Use `sudo`:
+```bash
+sudo npm link
+```
+Or skip linking and run directly:
+```bash
+node bin/resume-tailor.js -r resume.docx -j jd.txt
+```
+
+### `ollama pull` gives "could not connect to ollama server"
+
+You need `ollama serve` running in a **separate terminal tab**. Open a new tab (`Cmd + T`), run `ollama serve` there, then go back to your original tab and run `ollama pull mistral`.
+
+### "Resume not found" error
+
+You used a placeholder path like `/path/to/your-resume.docx`. Replace it with the actual path to your file:
+```bash
+# Example with a file in Downloads
+resume-tailor -r ~/Downloads/my-resume.docx -j ~/Downloads/jd.txt
+```
+
+### Resume output is blank or missing sections
+
+Your `.docx` may have unusual formatting. Two options:
+
+1. **Save as JSON** — Create a `.json` file using the format above. This gives the most reliable results.
+2. **Check what the parser sees** — Run this to debug:
+   ```bash
+   cd ~/path/to/resume-tailor
+   node -e "
+   import mammoth from 'mammoth';
+   import { readFileSync } from 'fs';
+   const buffer = readFileSync('$HOME/Downloads/my-resume.docx');
+   const result = await mammoth.extractRawText({ buffer });
+   console.log(result.value.substring(0, 2000));
+   "
+   ```
+   This shows the raw text the parser works with. If sections aren't detected, [open an issue](https://github.com/YOUR_USERNAME/resume-tailor/issues) with a sample of the output (redact personal info).
+
+### Using OpenAI instead of Ollama
+
+```bash
+resume-tailor -r resume.docx -j jd.txt --ai openai --api-key sk-your-key-here
+```
+Or set the environment variable:
+```bash
+export OPENAI_API_KEY=sk-your-key-here
+resume-tailor -r resume.docx -j jd.txt --ai openai
+```
+
+---
 
 ## Project Structure
 
@@ -185,15 +367,20 @@ resume-tailor/
 └── package.json
 ```
 
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Ideas welcome:
 
 - New resume templates
-- Better PDF parsing
+- Better PDF parsing for complex layouts
 - More AI providers (Anthropic, Groq, local llama.cpp)
 - LinkedIn/Indeed URL scraping improvements
-- YAML resume format
+- YAML resume format support
+- Batch mode (multiple JDs at once)
+
+---
 
 ## License
 
